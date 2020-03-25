@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/views/Home.vue'
-import ProductPage from "@/views/ProductPage";
+import Products from "@/views/Products";
+import Product from "@/views/Product";
 
 Vue.use(VueRouter);
 
@@ -12,9 +13,14 @@ const routes = [
     component: Home
   },
   {
+    path: '/products',
+    name: 'products',
+    component: Products,
+  },
+  {
     path: '/product/:id',
-    name: 'product-page',
-    component: ProductPage,
+    name: 'product',
+    component: Product,
     props: true
   },
 ];

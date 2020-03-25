@@ -2,16 +2,22 @@
   <div id="app">
     <AppHeader></AppHeader>
     <router-view/>
+    <SignIn></SignIn>
+    <SignUp></SignUp>
   </div>
 </template>
 
 <script>
 
 import AppHeader from "@/components/Header/AppHeader";
+import SignIn from "@/components/Auth/SignIn";
+import SignUp from "@/components/Auth/SignUp";
 export default {
   name: 'App',
   components: {
-    AppHeader
+    AppHeader,
+    SignIn,
+    SignUp
   }
 }
 </script>
@@ -26,5 +32,8 @@ export default {
   body{
     font-family: Noto Sans,Arial,sans-serif;
     color: #2e2e2e;
+  }
+  .container{
+
   }
 </style>

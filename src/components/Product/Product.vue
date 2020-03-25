@@ -4,7 +4,7 @@
     <h3 class="product__title">{{ product.title }}</h3>
     <span class="product__price">{{ product.price }} {{ product.currency }}</span>
     <hr>
-    <b-button href="#"  variant="primary" class="btn-post-item" style="color: #fff">Открыть пост</b-button>
+    <b-button href="#" :to="{name:'product', params: {id:product.id}}" variant="primary" class="btn-post-item" style="color: #fff">Открыть пост</b-button>
   </article>
 </template>
 
@@ -17,7 +17,6 @@
           }
         },
       created() {
-        console.log(this.product);
       }
     };
 </script>
@@ -25,7 +24,7 @@
 <style lang="scss">
   .product{
     color: #666;
-    width: 15%;
+    width: 25%;
     padding: .9375rem;
     display: inline-block;
     overflow: hidden;

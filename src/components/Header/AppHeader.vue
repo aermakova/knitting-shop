@@ -1,34 +1,47 @@
 <template>
-  <div class="header">
-    <router-link to="/" class="logo"><strong>На крючке</strong></router-link>
-    <nav class="nav">
-      <ul class="nav-list">
-        <li class="nav-item"><router-link to="/" class="nav-link">Главная</router-link></li>
-        <li class="nav-item"><router-link to="/products" class="nav-link">Игрушки</router-link></li>
-        <li class="nav-item"><router-link to="/about" class="nav-link">Обо мне</router-link></li>
-        <li class="nav-item"><router-link to="/contacts" class="nav-link">Контакты</router-link></li>
-        <li class="nav-item"><router-link to="/post" class="nav-link">Пост</router-link></li>
-        <li class="nav-item"><router-link to="/registration" class="nav-link">Регистрация</router-link></li>
-        <li class="nav-item"><router-link to="/login" class="nav-link">Войти</router-link></li>
-        <li class="nav-item"><router-link to="/profile" class="nav-link">Мой профиль</router-link></li>
-        <li class="nav-item"><router-link to="/admin" class="nav-link">Админ</router-link></li>
-        <li class="nav-item"><router-link to="/logout" class="nav-link">Выйти</router-link></li>
-      </ul>
-    </nav>
-
-
-  </div>
+  <header class="header">
+    <div class="container">
+      <div class="header-row">
+        <router-link to="/" class="logo"><strong>На крючке</strong></router-link>
+        <nav class="nav">
+          <ul class="nav-list">
+            <li class="nav-item"><router-link to="/" class="nav-link">Главная</router-link></li>
+            <li class="nav-item"><router-link to="/products" class="nav-link">Игрушки</router-link></li>
+            <li class="nav-item"><router-link to="/about" class="nav-link">Обо мне</router-link></li>
+            <li class="nav-item"><router-link to="/contacts" class="nav-link">Контакты</router-link></li>
+          </ul>
+          <div class="nav-buttons" v-if="!isUserAuthenticated">
+            <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-in>Войти</b-button>
+            <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-up>Регистрация</b-button>
+          </div>
+          <div class="nav-buttons" v-else>
+            <router-link class="nav-btn nav-link" to="/admin">Админ</router-link>
+            <b-button class="nav-btn" v-b-modal.modal-logout>Выйти</b-button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
 </template>
 
 <script>
     export default {
         props: {
         },
+        computed: {
+          isUserAuthenticated() {
+            return false
+            //return this.$store.getters.isUserAuthenticated
+          },
+        }
     };
 </script>
 
 <style>
   .header{
+    position: relative;
+  }
+  .header-row{
     display: flex;
   }
   .nav{
@@ -41,6 +54,17 @@
     align-items: center;
     justify-content: center;
     margin: 0;
+  }
+  .nav-buttons{
+    display: flex;
+    align-items: center;
+    margin: -5px 0;
+    position: absolute;
+    right: 0;
+    top: 17px;
+  }
+  .nav-btn{
+    margin: 5px;
   }
   .nav-link{
     color: #342f2f;

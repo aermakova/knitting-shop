@@ -1,15 +1,11 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
-//import axios from "axios";
-Vue.use(Vuex);
 
-export default new Vuex.Store({
+export default {
   plugins: [
   ],
   state: {
     products: [],
     error: null,
-    config: null
   },
   mutations: {
     SET_PRODUCTS(state, payload) {
@@ -22,7 +18,6 @@ export default new Vuex.Store({
         let products = [];
         querySnapshot.forEach((doc) =>{
           let product = doc.data();
-          product.id = doc.id;
           products.push(product);
         });
         ctx.commit('SET_PRODUCTS', products)
@@ -32,4 +27,4 @@ export default new Vuex.Store({
   getters: {
     GET_PRODUCTS: (state) => state.products,
   }
-})
+}
