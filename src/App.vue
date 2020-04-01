@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <AppHeader></AppHeader>
-    <router-view/>
+    <transition name="slide-fade">
+      <router-view/>
+    </transition>
     <SignIn></SignIn>
     <SignUp></SignUp>
   </div>
@@ -35,5 +37,26 @@ export default {
   }
   .container{
 
+  }
+  .slide-fade-enter-active {
+    transition: all .1s ease;
+  }
+  /*.slide-fade-leave-active {*/
+  /*  transition: all .1s ease;*/
+  /*}*/
+  .slide-fade-leave-to
+    /* .slide-fade-leave-active до версии 2.1.8 */ {
+    transform: translateY(100px);
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .slide-fade-enter {
+    transform: translateY(-100px);
+    opacity: 0;
+    position: relative;
+    left: 0;
+    top: 0;
   }
 </style>

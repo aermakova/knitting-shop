@@ -1,50 +1,48 @@
 <template>
-  <div class="header">
-    <router-link to="/" class="logo"><strong>На крючке</strong></router-link>
-    <nav class="nav">
-      <ul class="nav-list">
-        <li class="nav-item"><router-link to="/" class="nav-link">Главная</router-link></li>
-        <li class="nav-item"><router-link to="/post" class="nav-link">Пост</router-link></li>
-      </ul>
-    </nav>
-
-
+  <div class="basket">
+    <div class="basket-link" @click="basket = !basket">Корзина<span>1</span></div>
+    <div class="basket-block" v-if="basket">
+      товар
+    </div>
   </div>
 </template>
 
 <script>
     export default {
-        props: {
-        },
+        data() {
+          return {
+            'basket': false,
+          }
+        }
     };
 </script>
 
-<style>
-  .header{
+<style lang="scss">
+  .basket{
     display: flex;
-  }
-  .nav{
-    margin-left: auto;
-  }
-  .nav-list{
-    display: flex;
-    padding: 0;
-    list-style: none;
-  }
-  .nav-link{
-    color: #342f2f;
-    transition: all .3s ease;
-    line-height: 48px;
-    text-decoration: none;
-    display: block;
-    padding: 0 1.5625rem;
+    align-items: center;
+    padding: 0.5rem 1rem;
     position: relative;
+    &-link{
+      span{
+        padding: 0 5px;
+        font-size: 10px;
+        position: absolute;
+        border-radius: 50%;
+        color: #fff;
+        background: green;
+      }
+    }
   }
-  .logo{
-    font-size: 1.6875rem;
-    line-height: 1.2963;
-    color: #222;
-    text-transform: uppercase;
-    text-decoration: none;
+  .basket-block{
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 300px;
+    min-height: 200px;
+    z-index: 3;
+    text-align: left;
+    box-shadow: 1px 1px 5px 2px grey;
+    background: #fff;
   }
 </style>

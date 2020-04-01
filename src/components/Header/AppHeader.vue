@@ -9,6 +9,7 @@
             <li class="nav-item"><router-link to="/products" class="nav-link">Игрушки</router-link></li>
             <li class="nav-item"><router-link to="/about" class="nav-link">Обо мне</router-link></li>
             <li class="nav-item"><router-link to="/contacts" class="nav-link">Контакты</router-link></li>
+            <li class="nav-item"><router-link to="/admin" class="nav-link">Админка</router-link></li>
           </ul>
           <div class="nav-buttons" v-if="!isUserAuthenticated">
             <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-in>Войти</b-button>
@@ -19,12 +20,14 @@
             <b-button class="nav-btn" v-b-modal.modal-logout>Выйти</b-button>
           </div>
         </nav>
+        <Basket></Basket>
       </div>
     </div>
   </header>
 </template>
 
 <script>
+  import Basket from './Basket';
     export default {
         props: {
         },
@@ -33,7 +36,10 @@
             return false
             //return this.$store.getters.isUserAuthenticated
           },
-        }
+        },
+      components: {
+        Basket
+      },
     };
 </script>
 
