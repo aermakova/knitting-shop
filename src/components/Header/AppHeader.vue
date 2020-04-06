@@ -9,36 +9,35 @@
             <li class="nav-item"><router-link to="/products" class="nav-link">Игрушки</router-link></li>
             <li class="nav-item"><router-link to="/about" class="nav-link">Обо мне</router-link></li>
             <li class="nav-item"><router-link to="/contacts" class="nav-link">Контакты</router-link></li>
-            <li class="nav-item"><router-link to="/admin" class="nav-link">Админка</router-link></li>
           </ul>
           <div class="nav-buttons" v-if="!isUserAuthenticated">
             <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-in>Войти</b-button>
             <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-up>Регистрация</b-button>
           </div>
-          <div class="nav-buttons" v-else>
+          <div class="nav-buttons">
             <router-link class="nav-btn nav-link" to="/admin">Админ</router-link>
-            <b-button class="nav-btn" v-b-modal.modal-logout>Выйти</b-button>
+            <b-button class="nav-btn" size="sm" v-b-modal.modal-logout>Выйти</b-button>
+            <small>User Name</small>
           </div>
         </nav>
-        <Basket></Basket>
+<!--        <Basket></Basket>-->
       </div>
     </div>
   </header>
 </template>
 
 <script>
-  import Basket from './Basket';
+  // import Basket from './Basket';
     export default {
         props: {
         },
         computed: {
           isUserAuthenticated() {
-            return false
-            //return this.$store.getters.isUserAuthenticated
+            return this.$store.getters.isUserAuthenticated
           },
         },
       components: {
-        Basket
+        // Basket
       },
     };
 </script>
@@ -65,9 +64,9 @@
     display: flex;
     align-items: center;
     margin: -5px 0;
-    position: absolute;
+    //position: absolute;
     right: 0;
-    top: 17px;
+    /*top: 17px;*/
   }
   .nav-btn{
     margin: 5px;

@@ -43,18 +43,7 @@
         <b-button variant="warning" @click="addToBasket">Добавить в корзину</b-button>
       </div>
       <div class="col-sm-6 text-left">
-        <ul class="product-gallery">
-          <gallery :images="product.image"
-                   :index="index"
-                   @close="index = null">
-          </gallery>
-          <li v-for="(image, imageIndex) in product.image"
-              :key="'image_' + imageIndex + image"
-              @click="index = imageIndex"
-              class="product-gallery__item">
-            <img :src="image" title="" alt="">
-          </li>
-        </ul>
+        <Gallery :product="product"></Gallery>
       </div>
     </div>
   </div>
@@ -62,16 +51,15 @@
 
 <script>
   import Vue from 'vue';
-  import VueGallery from 'vue-gallery';
+  import Gallery from '@/components/Gallery';
   export default {
     data() {
       return{
-        'product': null,
-        'characteristicsTitle': [
+        product: null,
+        characteristicsTitle: [
           'Ширина', 'Высота', 'Вес'
         ],
-        'productCounter': 0,
-        'index': null
+        productCounter: 0,
       }
     },
     computed: {
@@ -98,9 +86,13 @@
       addToBasket() {
         console.log(this.totalPrice);
       },
+      basketProducts() {
+        let basketProducts = {};
+        return basketProducts;
+      }
     },
     components: {
-      'gallery': VueGallery
+      Gallery
     }
   }
 

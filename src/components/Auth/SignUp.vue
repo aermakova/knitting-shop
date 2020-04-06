@@ -5,10 +5,21 @@
              :class="error ? 'alert-show' : 'alert-hide'"
              class="alert-small"
              variant="danger">{{ error.message }}</b-alert>
-    <b-form class="mt-4" style="width: 100%">
+    <b-form style="width: 100%">
+      <b-form-group
+              id="input-group-13"
+              label-for="input-13"
+              description="Введите ваше имя"
+      >
+        <b-form-input
+                id="input-13"
+                type="text"
+                placeholder="Введите ваше имя"
+                v-model="name"
+        ></b-form-input>
+      </b-form-group>
       <b-form-group
               id="input-group-1"
-              label="Почта:"
               label-for="input-1"
               description="Введите Ваш e-mail"
       >
@@ -21,7 +32,6 @@
       </b-form-group>
       <b-form-group
               id="input-group-2"
-              label="Пароль:"
               label-for="input-2"
               description="Придумайте и введите пароль"
       >
@@ -33,7 +43,7 @@
         ></b-form-input>
       </b-form-group>
     </b-form>
-    <b-button type="submit" variant="success" @click="signUp" :disabled="processing">Регистрация</b-button>
+    <b-button type="submit" variant="success" size="sm" @click="signUp" :disabled="processing">Регистрация</b-button>
   </b-modal>
 </template>
 
@@ -41,8 +51,9 @@
   export default {
     data() {
       return{
-        'email': null,
-        'password': null,
+        name: null,
+        email: null,
+        password: null,
       }
     },
     computed: {
@@ -66,8 +77,7 @@
     },
     methods: {
       signUp() {
-        this.$store.dispatch('SIGNUP', {email: this.email, password: this.password});
-
+        this.$store.dispatch('SIGN_UP', {email: this.email, password: this.password, name: this.name});
       }
     }
   }

@@ -4,6 +4,7 @@
     <transition name="slide-fade">
       <router-view/>
     </transition>
+    <LogOut></LogOut>
     <SignIn></SignIn>
     <SignUp></SignUp>
   </div>
@@ -14,9 +15,11 @@
 import AppHeader from "@/components/Header/AppHeader";
 import SignIn from "@/components/Auth/SignIn";
 import SignUp from "@/components/Auth/SignUp";
+import LogOut from "@/components/Auth/LogOut";
 export default {
   name: 'App',
   components: {
+    LogOut,
     AppHeader,
     SignIn,
     SignUp

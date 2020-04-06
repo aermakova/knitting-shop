@@ -12,13 +12,12 @@
           >
             <b-form-input
                     id="product-title"
-                    v-model="form.title"
+                    v-model="newProduct.title"
                     type="text"
                     required
                     placeholder="Название"
             ></b-form-input>
           </b-form-group>
-
           <b-form-group
                   id="input-product-body"
                   label-for="product-body"
@@ -26,13 +25,12 @@
           >
             <b-form-input
                     id="product-body"
-                    v-model="form.body"
+                    v-model="newProduct.body"
                     type="text"
                     required
                     placeholder="Название"
             ></b-form-input>
           </b-form-group>
-
           <b-form-group
                   id="input-product-price"
                   label-for="product-price"
@@ -40,13 +38,19 @@
           >
             <b-form-input
                     id="product-price"
-                    v-model="form.price"
+                    v-model="newProduct.price"
                     type="number"
                     required
                     placeholder="Цена"
             ></b-form-input>
           </b-form-group>
-
+          <b-form-checkbox-group
+                  id="checkbox-group-1"
+                  v-model="newProduct.currency"
+                  :options="newProductDetails.currency"
+                  name="flavour-1"
+                  description="Выбирите валюту"
+          ></b-form-checkbox-group>
           <b-form-group
                   id="input-group-1"
                   label-for="input-1"
@@ -56,7 +60,7 @@
                     id="input-1"
                     type="url"
                     placeholder="https://img_url"
-                    v-model="form.url"
+                    v-model="newProduct.image"
             ></b-form-input>
           </b-form-group>
           <p><b>Введите характеристики товара</b></p>
@@ -67,9 +71,8 @@
                 <td class="align-middle">
                   <b-form-input
                           id="product-width"
-                          v-model="form.width"
+                          v-model="newProduct.width"
                           type="text"
-                          required
                           placeholder="Ширина"
                   ></b-form-input>
                 </td>
@@ -79,9 +82,8 @@
                 <td class="align-middle">
                   <b-form-input
                           id="product-height"
-                          v-model="form.height"
+                          v-model="newProduct.height"
                           type="text"
-                          required
                           placeholder="Высота"
                   ></b-form-input>
                 </td>
@@ -91,87 +93,120 @@
                 <td class="align-middle">
                   <b-form-input
                           id="product-weight"
-                          v-model="form.weight"
+                          v-model="newProduct.weight"
                           type="text"
-                          required
                           placeholder="Вес"
                   ></b-form-input>
                 </td>
               </tr>
             </tbody>
           </table>
-          <p><b>Ввыбирите теги, к которым относится товар</b></p>
-          <b-form-select v-model="selected" :options="options" multiple :select-size="4"></b-form-select>
-
-          <b-form-group id="input-group-3" label="Food:" label-for="input-3">
-            <b-form-select
-                    id="input-3"
-                    v-model="form.food"
-                    :options="foods"
-                    required
-            ></b-form-select>
+          <b-form-group
+                  label-for="input-select-1"
+                  description="Выбирите основной материал изделия"
+          >
+            <b-form-select id="input-select-1" :options="newProductDetails.material"></b-form-select>
           </b-form-group>
-
-          <b-form-group id="input-group-4">
-            <b-form-checkbox-group v-model="form.checked" id="checkboxes-4">
-              <b-form-checkbox value="me">Check me out</b-form-checkbox>
-              <b-form-checkbox value="that">Check that out</b-form-checkbox>
-            </b-form-checkbox-group>
+          <b-form-group
+                  label-for="input-select-1"
+                  description="Выбирите пометку для товара"
+          >
+            <b-form-select id="input-select-1" :options="newProductDetails.note"></b-form-select>
           </b-form-group>
+          <p><b>Выбирите все теги, которые характеризуют товар</b></p>
+          <b-form-checkbox-group
+                  id="checkbox-group-2"
+                  v-model="newProduct.tags"
+                  :options="newProductDetails.tags"
+                  name="flavour-2"
+          ></b-form-checkbox-group>
 
           <b-button type="submit" variant="primary">Submit</b-button>
           <b-button type="reset" variant="danger">Reset</b-button>
         </b-form>
-      </div>
-      <div class="col-lg-6">
-        <b-card class="mt-3" header="Form Data Result">
-          <pre class="m-0">{{ form }}</pre>
-          <div class="mt-3">Selected: <strong>{{ selected }}</strong></div>
-        </b-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+  //import Vue from "vue";
+
   export default {
     data() {
       return {
-        form: {
-          email: '',
-          name: '',
-          food: null,
-          checked: []
+        newProduct: {
+          id: '',
+          title: '',
+          body: '',
+          price: null,
+          image: '',
+          tags: [],
+          characteristics: [],
+          width: '',
+          currency: [],
+          height: '',
+          weight: '',
+          rating: null,
         },
-        foods: [{ text: 'Select One', value: null }, 'Carrots', 'Beans', 'Tomatoes', 'Corn'],
-        show: true,
-        selected: ['b'], // Array reference
-        options: [
-          { value: 'a', text: 'This is First option' },
-          { value: 'b', text: 'Default Selected Option' },
-          { value: 'c', text: 'This is another option' },
-          { value: 'd', text: 'This one is disabled', disabled: true },
-          { value: 'e', text: 'This is option e' },
-          { value: 'f', text: 'This is option f' },
-          { value: 'g', text: 'This is option g' }
-        ]
+        newProductDetails: {
+          tags: [
+            { text: 'детские', value: 'детские' },
+            { text: 'животные', value: 'животные' },
+            { text: 'вымышленные', value: 'вымышленные' },
+            { text: 'детские 1+', value: 'детские 1+' },
+            { text: 'детские 3+', value: 'детские 3+' },
+            { text: 'подростковые', value: 'подростковые' },
+          ],
+          characteristics: [
+            { value: '₴', text: 'Ширина' },
+            { value: '$', text: 'Высота' },
+            { value: '$', text: 'Вес' },
+          ],
+          material: [
+            { value: 'акрил', text: 'Акрил' },
+            { value: 'коттон', text: 'Коттон' },
+          ],
+          currency: [
+            { value: '₴', text: 'Гривна' },
+            { value: '$', text: 'Доллар' },
+          ],
+          note: [
+            { value: 'новинка', text: 'Новинка' },
+            { value: 'распродажа', text: 'Распродажа' },
+            { value: 'горячее', text: 'Горячее' },
+            { value: 'ожидается', text: 'Ожидается' },
+          ],
+          status: [
+            { value: 'новый', text: 'Новый' },
+            { value: 'продано', text: 'Продано' },
+            { value: 'бронь', text: 'Бронь' },
+          ],
+        },
+        show: true
       }
     },
     methods: {
-      onSubmit(evt) {
-        evt.preventDefault();
-        alert(JSON.stringify(this.form))
+      onSubmit() {
+        alert(JSON.stringify(this.newProduct))
+        // Vue.prototype.$db.collection("products").set({
+        //   id: this.id,
+        //   title: this.title,
+        //   body: this.body,
+        //   price: this.price,
+        //   image: this.image,
+        // }, { merge: true });
       },
       onReset(evt) {
         evt.preventDefault();
-        this.form.email = '';
-        this.form.name = '';
-        this.form.food = null;
-        this.form.checked = [];
-        this.show = false;
-        this.$nextTick(() => {
-          this.show = true
-        })
+        // this.form.email = '';
+        // this.form.name = '';
+        // this.form.food = null;
+        // this.form.checked = [];
+        // this.show = false;
+        // this.$nextTick(() => {
+        //   this.show = true
+        // })
       }
     }
   }

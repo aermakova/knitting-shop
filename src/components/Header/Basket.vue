@@ -11,7 +11,7 @@
     export default {
         data() {
           return {
-            'basket': false,
+            basket: false,
           }
         }
     };

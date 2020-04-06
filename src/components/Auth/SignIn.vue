@@ -1,69 +1,111 @@
 <template>
-  <b-modal id="modal-sign-in" centered title="Вход">
-    <b-form class="mt-4" style="width: 100%" @submit.prevent="onEdit()">
+  <b-modal id="modal-sign-in" centered title="Вход" hide-footer>
+
+    <b-alert show v-if="error"
+             :class="error ? 'alert-show' : 'alert-hide'"
+             class="alert-small"
+             variant="danger">{{ error.message }}</b-alert>
+    <b-form style="width: 100%">
       <b-form-group
-              id="input-group-4"
+              id="input-group-1"
               label="Почта:"
-              label-for="input-4"
+              label-for="input-1"
               description="Введите Ваш e-mail"
       >
         <b-form-input
-                id="input-4"
+                id="input-1"
                 type="email"
+                placeholder="example@email.com"
                 v-model="email"
+                :class="{ 'is-invalid': $v.email.$error }"
         ></b-form-input>
+        <small class="error" v-if="!$v.email.emailRegex">Укажите корректный e-mail</small>
       </b-form-group>
       <b-form-group
-              id="input-group-5"
+              id="input-group-2"
               label="Пароль:"
-              label-for="input-5"
-              description="Ввведите Ваш пароль"
+              label-for="input-2"
+              description="Придумайте и введите пароль"
       >
         <b-form-input
-                id="input-5"
+                id="input-2"
                 type="text"
+                placeholder="*******"
                 v-model="password"
+                :class="{ 'is-invalid': $v.password.$error }"
         ></b-form-input>
+        <small class="error" v-if="!$v.password.minLength">Пароль должен содержать не менее {{$v.password.$params.minLength.min}} символов</small>
       </b-form-group>
     </b-form>
+    <b-button type="submit" variant="success" size="sm" @click="signIn" :disabled="submitStatus === 'PENDING'">
+      <b-spinner small v-if="submitStatus === 'PENDING'"></b-spinner>
+      Войти
+    </b-button>
   </b-modal>
 </template>
 
 <script>
-  import { required, minLength } from 'vuelidate/lib/validators'
+  import { helpers, required, minLength } from 'vuelidate/lib/validators'
+  const emailRegex = helpers.regex('urlRegex', /(^([a-zA-Z0-9_-]+)@([a-zA-Z0-9_-]+)\.([a-zA-Z]{2,5})$)/);
   export default {
     data() {
       return{
-        'email': '',
-        'password': '',
+        email: '',
+        password: '',
+        submitStatus: null
+      }
+    },
+    computed: {
+      error() {
+        return this.$store.getters.getError
+      },
+      processing() {
+        return this.$store.getters.getProcessing
+      },
+      isUserAuthenticated() {
+        return this.$store.getters.isUserAuthenticated
+      }
+    },
+    watch: {
+      isUserAuthenticated(val) {
+        if(val === true) {
+          this.$bvModal.hide('modal-sign-in');
+          this.$router.push('/')
+        }
       }
     },
     methods: {
-      status(validation) {
-        return {
-          error: validation.$error,
-          dirty: validation.$dirty
+      signIn() {
+        this.$v.$touch();
+        if (this.$v.$invalid) {
+          this.submitStatus = 'ERROR';
+        } else {
+          this.$store.dispatch('SIGN_IN', {email: this.email, password: this.password});
+          //this.submitStatus = 'PENDING';
+          this.$bvModal.hide('modal-sign-in');
         }
       },
       onReset(evt) {
         evt.preventDefault();
-        this.url = '';
-        this.title = '';
-        this.body = '';
-        this.show = false;
-        this.$nextTick(() => {
-          this.show = true
-        })
+        this.email = '';
+        this.password = '';
+        this.submitStatus = null;
       }
+    },
+    mounted() {
+      this.$root.$on('bv::modal::hide', () => {
+        this.email = '';
+        this.password = '';
+      })
     },
     validations: {
       email: {
         required,
-        maxLength: minLength(10),
+        emailRegex,
       },
       password: {
         required,
-        maxLength: minLength(1),
+        minLength: minLength(6),
       },
     },
   }
@@ -88,17 +130,7 @@
       -webkit-box-shadow: 0 0 0 30px #FDD inset !important;
     }
   }
-  .dirty {
-    border-color: #5A5;
-    background-color: #EFE!important;
-  }
-
-  .dirty:focus {
-    outline-color: #8E8;
-  }
-
   .error {
-    border-color: red;
-    background-color: #FDD!important;
+    color: #dc3545;
   }
 </style>
