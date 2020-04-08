@@ -16,7 +16,9 @@
                 type="text"
                 placeholder="Введите ваше имя"
                 v-model="name"
+                :class="{ 'is-invalid': $v.name.$error }"
         ></b-form-input>
+        <small class="error" v-if="!$v.name.minLength">Имя должно содержать не менее {{$v.name.$params.minLength.min}} символов</small>
       </b-form-group>
       <b-form-group
               id="input-group-1"
@@ -27,8 +29,10 @@
                 id="input-1"
                 type="email"
                 placeholder="example@email.com"
-                v-model="email"
+                v-model.trim="email"
+                :class="{ 'is-invalid': $v.email.$error }"
         ></b-form-input>
+        <small class="error" v-if="!$v.email.emailRegex">Укажите корректный e-mail</small>
       </b-form-group>
       <b-form-group
               id="input-group-2"
@@ -39,21 +43,44 @@
                 id="input-2"
                 type="text"
                 placeholder="*******"
-                v-model="password"
+                v-model.trim="$v.password.$model"
+                :class="{ 'is-invalid': $v.password.$error }"
         ></b-form-input>
+        <small class="error" v-if="!$v.password.minLength">Пароль должен содержать не менее {{$v.password.$params.minLength.min}} символов</small>
+      </b-form-group>
+      <b-form-group
+              id="input-group-3"
+              label-for="input-3"
+              description="Подтвердите пароль"
+      >
+        <b-form-input
+                id="input-3"
+                type="text"
+                placeholder="*******"
+                v-model.trim="$v.passwordRepeat.$model"
+                :class="{ 'is-invalid': $v.passwordRepeat.$error }"
+        ></b-form-input>
+        <small class="error" v-if="!$v.passwordRepeat.sameAsPassword">Пароли должны совпадать</small>
       </b-form-group>
     </b-form>
-    <b-button type="submit" variant="success" size="sm" @click="signUp" :disabled="processing">Регистрация</b-button>
+    <b-button type="submit" variant="success" size="sm" @click="signUp" :disabled="submitStatus === 'PENDING'">
+      <b-spinner small v-if="submitStatus === 'PENDING'"></b-spinner>
+      Регистрация
+    </b-button>
   </b-modal>
 </template>
 
 <script>
+  import { helpers, sameAs, required, minLength } from 'vuelidate/lib/validators'
+  const emailRegex = helpers.regex('urlRegex', /(^([a-zA-Z0-9_-]+)@([a-zA-Z0-9_-]+)\.([a-zA-Z]{2,5})$)/);
   export default {
     data() {
       return{
         name: null,
         email: null,
         password: null,
+        passwordRepeat: null,
+        submitStatus: null
       }
     },
     computed: {
@@ -77,9 +104,44 @@
     },
     methods: {
       signUp() {
-        this.$store.dispatch('SIGN_UP', {email: this.email, password: this.password, name: this.name});
+        this.$v.$touch();
+        if (this.$v.$invalid) {
+          this.submitStatus = 'ERROR';
+        } else {
+          this.$store.dispatch('SIGN_UP', {email: this.email, password: this.password, name: this.name});
+          //this.submitStatus = 'PENDING';
+          this.$bvModal.hide('modal-sign-up');
+        }
       }
-    }
+    },
+    mounted() {
+      this.$root.$on('bv::modal::hide', () => {
+        this.name = '';
+        this.email = '';
+        this.password = '';
+        this.passwordRepeat = '';
+        this.$nextTick(() => {
+          this.$v.$reset();
+        })
+      })
+    },
+    validations: {
+      name: {
+        required,
+        minLength: minLength(2),
+      },
+      email: {
+        required,
+        emailRegex,
+      },
+      password: {
+        required,
+        minLength: minLength(6),
+      },
+      passwordRepeat: {
+        sameAsPassword: sameAs('password'),
+      },
+    },
   }
 
 </script>
@@ -116,17 +178,7 @@
       -webkit-box-shadow: 0 0 0 30px #FDD inset !important;
     }
   }
-  .dirty {
-    border-color: #5A5;
-    background-color: #EFE!important;
-  }
-
-  .dirty:focus {
-    outline-color: #8E8;
-  }
-
   .error {
-    border-color: red;
-    background-color: #FDD!important;
+    color: #dc3545;
   }
 </style>

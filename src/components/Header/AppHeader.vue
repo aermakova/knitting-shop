@@ -14,10 +14,10 @@
             <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-in>Войти</b-button>
             <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-up>Регистрация</b-button>
           </div>
-          <div class="nav-buttons">
+          <div class="nav-buttons" v-if="isUserAuthenticated">
             <router-link class="nav-btn nav-link" to="/admin">Админ</router-link>
             <b-button class="nav-btn" size="sm" v-b-modal.modal-logout>Выйти</b-button>
-            <small>User Name</small>
+            <small>{{ user }}</small>
           </div>
         </nav>
 <!--        <Basket></Basket>-->
@@ -29,13 +29,16 @@
 <script>
   // import Basket from './Basket';
     export default {
-        props: {
+      props: {
+      },
+      computed: {
+        isUserAuthenticated() {
+          return this.$store.getters.isUserAuthenticated
         },
-        computed: {
-          isUserAuthenticated() {
-            return this.$store.getters.isUserAuthenticated
-          },
-        },
+        user() {
+          return this.$store.getters.GET_USER
+        }
+      },
       components: {
         // Basket
       },

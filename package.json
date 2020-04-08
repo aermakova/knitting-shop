@@ -13,7 +13,7 @@
     "vue": "^2.6.11",
     "vue-gallery": "^2.0.1",
     "vue-lodash": "^2.1.2",
-    "vue-persistent-state": "^0.2.1"
+    "vuex-persistedstate": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.2.0",

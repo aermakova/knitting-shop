@@ -40,7 +40,6 @@
                     id="product-price"
                     v-model="newProduct.price"
                     type="number"
-                    required
                     placeholder="Цена"
             ></b-form-input>
           </b-form-group>
@@ -62,7 +61,28 @@
                     placeholder="https://img_url"
                     v-model="newProduct.image"
             ></b-form-input>
+            <button type="button" aria-controls="sb-wrap" aria-keyshortcuts="ArrowUp" class="btn btn-sm btn-add-img py-0" @click="addImageField">
+              <div>
+                <svg width="1em" height="1em" viewBox="0 0 20 20" focusable="false" role="img" alt="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi-plus b-icon bi"><g transform="translate(10 10) scale(1.25 1.25) translate(-10 -10)"><path fill-rule="evenodd" d="M10 5.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H6a.5.5 0 010-1h3.5V6a.5.5 0 01.5-.5z" clip-rule="evenodd"></path><path fill-rule="evenodd" d="M9.5 10a.5.5 0 01.5-.5h4a.5.5 0 010 1h-3.5V14a.5.5 0 01-1 0v-4z" clip-rule="evenodd"></path></g></svg>
+              </div>
+            </button>
           </b-form-group>
+          <div class="div" >
+            <b-form-group
+                    :id="'input-group-1' + index"
+                    :label-for="'input-1' + index"
+                    :description="'Вставьте ссылку на' + imageField + 'товара'"
+                    :key="'input-1' + index"
+                    v-for="(imageField, index) in imageFields"
+            >
+              <b-form-input
+                      id="input-1"
+                      type="url"
+                      placeholder="https://img_url"
+                      v-model="newProduct.image[index]"
+              ></b-form-input>
+            </b-form-group>
+          </div>
           <p><b>Введите характеристики товара</b></p>
           <table class="table">
             <tbody>
@@ -183,19 +203,17 @@
             { value: 'бронь', text: 'Бронь' },
           ],
         },
+        imageFields: [],
         show: true
       }
     },
     methods: {
-      onSubmit() {
-        alert(JSON.stringify(this.newProduct))
-        // Vue.prototype.$db.collection("products").set({
-        //   id: this.id,
-        //   title: this.title,
-        //   body: this.body,
-        //   price: this.price,
-        //   image: this.image,
-        // }, { merge: true });
+      onSubmit(evt) {
+        evt.preventDefault();
+        let product = JSON.stringify(this.newProduct);
+        console.log(product)
+        this.$store.dispatch('ADD_NEW_PRODUCT', Object.assign({}, this.newProduct))
+        this.$router.push('/products')
       },
       onReset(evt) {
         evt.preventDefault();
@@ -207,7 +225,22 @@
         // this.$nextTick(() => {
         //   this.show = true
         // })
+      },
+      addImageField() {
+        this.imageFields.push('Дополнительное изображение')
       }
     }
   }
 </script>
+
+<style>
+  .btn-add-img{
+    border: 1px solid #ced4da!important;
+    border-radius: 0.25rem!important;
+    float: right;
+    position: relative;
+    left: 35px;
+    bottom: 36px;
+    height: calc(1.5em + 0.75rem + 2px);
+  }
+</style>

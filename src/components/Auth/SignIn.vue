@@ -29,7 +29,7 @@
       >
         <b-form-input
                 id="input-2"
-                type="text"
+                type="password"
                 placeholder="*******"
                 v-model="password"
                 :class="{ 'is-invalid': $v.password.$error }"
@@ -85,17 +85,14 @@
           this.$bvModal.hide('modal-sign-in');
         }
       },
-      onReset(evt) {
-        evt.preventDefault();
-        this.email = '';
-        this.password = '';
-        this.submitStatus = null;
-      }
     },
     mounted() {
       this.$root.$on('bv::modal::hide', () => {
         this.email = '';
         this.password = '';
+        this.$nextTick(() => {
+          this.$v.$reset();
+        })
       })
     },
     validations: {

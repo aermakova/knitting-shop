@@ -27,6 +27,10 @@ new Vue({
   router,
   store,
   created() {
+    let vm = this;
     this.$store.dispatch('LOAD_PRODUCTS');
+    firebase.auth().onAuthStateChanged(function(user) {
+      vm.$store.dispatch('STATE_CHANGED', user);
+    });
   }
 }).$mount('#app');
