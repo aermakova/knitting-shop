@@ -1,6 +1,6 @@
 <template>
   <article class="product">
-    <img :src="product.image[0]" alt="" title="" class="product__img">
+    <img :src="product.image[0]" v-if="product.image.length" alt="" title="" class="product__img">
     <h3 class="product__title">{{ product.title }}</h3>
     <span class="product__price">{{ product.price }} {{ product.currency }}</span>
     <hr>

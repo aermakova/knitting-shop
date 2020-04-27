@@ -2,17 +2,40 @@
   <div class="basket">
     <div class="basket-link" @click="basket = !basket">Корзина<span>1</span></div>
     <div class="basket-block" v-if="basket">
-      товар
+      <table striped hover style="width: 100%">
+        <thead>
+          <tr>
+            <th>Наименование</th>
+            <th>Цена</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(i) in items" :key="'item_' + i">
+            <td>{{ items[i].name }}</td>
+            <td>{{ items[i].price }}</td>
+            <td><ProductCounter :product="product"></ProductCounter></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
 
 <script>
+  import ProductCounter from '@/components/Product/ProductCounter';
     export default {
         data() {
           return {
             basket: false,
+            items: [
+              { name: 'Наименование1', price: 'Цена1',  },
+              { name: 'Наименование2', price: 'Цена2',  },
+              { name: 'Наименование3', price: 'Цена3',  },
+            ]
           }
+        },
+        components: {
+          ProductCounter
         }
     };
 </script>
@@ -38,8 +61,9 @@
     position: absolute;
     right: 0;
     top: 100%;
-    width: 300px;
+    width: 500px;
     min-height: 200px;
+    padding: 20px;
     z-index: 3;
     text-align: left;
     box-shadow: 1px 1px 5px 2px grey;

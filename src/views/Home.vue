@@ -10,7 +10,7 @@
     <div class="products text-left mt-4">
       <div class="container">
         <h2>Новинки</h2>
-        <Product v-for="product in products" :product="product" :key="product.id"></Product>
+        <Product v-for="(product, index) in products" :product="product" :key="product.id + '_' + index"></Product>
       </div>
     </div>
   </div>
@@ -29,12 +29,21 @@ export default {
     products(){
       return this.$store.getters.GET_PRODUCTS
     },
+    user(){
+      let u = this.$store.getters.GET_USER;
+      return u;
+    }
   },
   methods: {
     ...mapActions([
       'LOAD_PRODUCTS'
     ])
   },
+  created() {
+    if (this.user.isAuthenticated) {
+      console.log(this.user.uid);
+    }
+  }
 }
 </script>
 

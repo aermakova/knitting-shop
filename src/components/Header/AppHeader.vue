@@ -1,5 +1,16 @@
 <template>
   <header class="header">
+    <div class="header-top" v-if="isUserAuthenticated">
+      <div class="container">
+        <div class="nav-buttons">
+          <b-button class="nav-btn" size="sm" v-b-modal.modal-logout>Выйти</b-button>
+          <router-link class="nav-btn nav-link" to="/admin">Добавить товар</router-link>
+          <router-link class="nav-btn nav-link" to="/">Удалить товар</router-link>
+          <router-link class="nav-btn nav-link" to="/admin">Редактировать товар</router-link>
+        </div>
+        <small>{{ user }}</small>
+      </div>
+    </div>
     <div class="container">
       <div class="header-row">
         <router-link to="/" class="logo"><strong>На крючке</strong></router-link>
@@ -14,20 +25,15 @@
             <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-in>Войти</b-button>
             <b-button class="nav-btn" size="sm" variant="warning" v-b-modal.modal-sign-up>Регистрация</b-button>
           </div>
-          <div class="nav-buttons" v-if="isUserAuthenticated">
-            <router-link class="nav-btn nav-link" to="/admin">Админ</router-link>
-            <b-button class="nav-btn" size="sm" v-b-modal.modal-logout>Выйти</b-button>
-            <small>{{ user }}</small>
-          </div>
         </nav>
-<!--        <Basket></Basket>-->
+        <Basket></Basket>
       </div>
     </div>
   </header>
 </template>
 
 <script>
-  // import Basket from './Basket';
+  import Basket from './Basket';
     export default {
       props: {
       },
@@ -36,18 +42,29 @@
           return this.$store.getters.isUserAuthenticated
         },
         user() {
+          /* let $$ = 7; */
           return this.$store.getters.GET_USER
         }
       },
       components: {
-        // Basket
+        Basket
       },
     };
 </script>
 
-<style>
+<style lang="scss">
   .header{
     position: relative;
+  }
+  .header-top{
+    background: #2c3e50;
+    color: #fff;
+    padding: 10px 0;
+    text-align: right;
+    .nav-link{
+      color: #fff;
+      line-height: 1;
+    }
   }
   .header-row{
     display: flex;
@@ -66,10 +83,10 @@
   .nav-buttons{
     display: flex;
     align-items: center;
-    margin: -5px 0;
-    //position: absolute;
-    right: 0;
-    /*top: 17px;*/
+    margin-left: auto;
+    width: 300px;
+    text-align: right;
+    flex-direction: row-reverse;
   }
   .nav-btn{
     margin: 5px;

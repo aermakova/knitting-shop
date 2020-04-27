@@ -3,7 +3,7 @@
     <div class="products text-left mt-4">
       <div class="container">
         <h2>Все товары</h2>
-        <Product v-for="product in products" :product="product" :key="product.id"></Product>
+        <Product v-for="product in products" :product="product" :key="product.id + new Date()"></Product>
       </div>
     </div>
   </div>

@@ -34,7 +34,7 @@ export default {
           .set(Object.assign({}, payload))
           .then(function() {
             state.commit('ADD_NEW_PRODUCT', payload);
-            console.log('Новый товар добавлен');
+            console.log('Новый товар добавлен' + JSON.stringify(payload));
           })
           .catch(function(error) {
             console.error("Ошибка: ", error);

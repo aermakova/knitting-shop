@@ -1,6 +1,6 @@
 import firebase from "firebase";
 import createPersistedState from "vuex-persistedstate";
-//import Vue from "vue";
+import Vue from "vue";
 
 export default {
     state: {
@@ -26,28 +26,27 @@ export default {
       SIGN_UP(state, payload) {
           state.commit('SET_PROCESSING', true);
           firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
-            .then(user => {
-                state.commit('SET_USER', user.uid);
-                console.log(user);
+            .then(u => {
+                //let newUserId = this.user.uid;
+                console.log(payload);
                 state.commit('SET_PROCESSING', false);
+                state.commit('SET_USER', u.uid);
+            })
+            .then(newUser => {
+                let ui = state.user.uid;
+                Vue.prototype.$db.collection("users").doc(ui).set({
+                    name: payload.name,
+                    id: payload.name
+                }).then(function () {
+                    console.log(this.user.uid);
+                    console.log(state.user.uid);
+                    console.log(newUser);
+                })
             })
             .catch(function(error) {
                 state.commit('SET_PROCESSING', false);
                 state.commit('SET_ERROR', error);
             });
-          setTimeout(() => {
-              console.log(state.user)
-          }, 2000);
-            // Vue.prototype.$db.collection("users").doc("test").set({
-            //     id: 12,
-            //     name: payload.name,
-            // })
-            //     .then(function() {
-            //         console.log("Document successfully written!");
-            //     })
-            //     .catch(function(error) {
-            //         console.error("Error writing document: ", error);
-            //     });
         },
         SIGN_IN({commit}, payload) {
             //commit('SET_PROCESSING', true);

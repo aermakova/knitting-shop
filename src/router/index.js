@@ -5,17 +5,17 @@ import Products from "@/views/Products";
 import Product from "@/views/Product";
 import About from "@/views/About";
 import Admin from "@/views/admin/Admin";
-import store from '@/store.js'
+//import store from '@/store.js'
 
 Vue.use(VueRouter);
 
-const ifAuthenticated = (to, from, next) => {
-  if (store.getters.isUserAuthenticated) {
-    next();
-    return
-  }
-  next('/');
-};
+// const ifAuthenticated = (to, from, next) => {
+//   if (store.getters.isUserAuthenticated) {
+//     next();
+//     return
+//   }
+//   next('/');
+// };
 const routes = [
   {
     path: '/',
@@ -42,7 +42,7 @@ const routes = [
     path: '/admin',
     name: 'admin',
     component: Admin,
-    beforeEnter: ifAuthenticated
+    //beforeEnter: ifAuthenticated
   },
 ];
 

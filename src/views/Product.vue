@@ -2,7 +2,7 @@
   <div v-if="product" class="container">
     <div class="row">
       <div class="col-sm-6">
-        <img :src="product.image[0]" :title="product.title" :alt="product.title">
+        <img :src="product.image[0]" v-if="product.image.length" :title="product.title" :alt="product.title">
         <div class="text-left">
           <b-badge variant="warning" class="mr-1" v-for="(tag, i) in product.tags" :key="'tag' + i">{{ tag }}</b-badge>
         </div>
@@ -34,12 +34,7 @@
         <span style="font-size:25px">{{ product.price }} </span>
         <span>{{ product.currency }}</span>
         <hr>
-        <div>
-          <form action="" style="width: 150px;margin-bottom: 15px">
-            <b-form-spinbutton id="sb-wrap" wrap v-model="productCounter" placeholder="1"></b-form-spinbutton>
-            <p> итого: {{ totalPrice }} {{ product.currency }}</p>
-          </form>
-        </div>
+        <ProductCounter :product="product"></ProductCounter>
         <b-button variant="warning" @click="addToBasket">Добавить в корзину</b-button>
       </div>
       <div class="col-sm-6 text-left">
@@ -52,6 +47,7 @@
 <script>
   import Vue from 'vue';
   import Gallery from '@/components/Gallery';
+  import ProductCounter from '@/components/Product/ProductCounter';
   export default {
     data() {
       return{
@@ -59,12 +55,6 @@
         characteristicsTitle: [
           'Ширина', 'Высота', 'Вес'
         ],
-        productCounter: 0,
-      }
-    },
-    computed: {
-      totalPrice() {
-        return Number(this.productCounter) * Number(this.product.price)
       }
     },
     props: {
@@ -92,7 +82,8 @@
       }
     },
     components: {
-      Gallery
+      Gallery,
+      ProductCounter
     }
   }
 
